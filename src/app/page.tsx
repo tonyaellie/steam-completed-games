@@ -26,6 +26,9 @@ const Home = async () => {
                 ).length /
                   achievements.achievements.length) *
                 100,
+              numCompleted: achievements.achievements.filter(
+                (achievement) => achievement.unlocked,
+              ).length,
             },
           };
         } catch (error) {
@@ -96,7 +99,10 @@ const Home = async () => {
               </Avatar>
               <h1 className="my-auto font-bold">{game.achievements!.game}</h1>
             </div>
-            <Progress value={game.achievements!.percentage} />
+            <Progress
+              value={game.achievements!.percentage}
+              text={`${game.achievements!.numCompleted} / ${game.achievements!.achievements.length}`}
+            />
           </div>
         ))}
       </div>
