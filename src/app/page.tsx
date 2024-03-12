@@ -1,12 +1,6 @@
 import SteamAPI from "steamapi";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Progress } from "~/components/ui/progress";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "~/components/ui/accordion";
 import { env } from "~/env";
 
 const Home = async () => {
@@ -22,8 +16,6 @@ const Home = async () => {
             env.STEAM_ID,
             game.game.id,
           );
-          // TODO: use the game schema to get the achievement names and descriptions
-          // const schema = await steam.getGameSchema(game.game.id);
           return {
             ...game,
             achievements: {
@@ -85,7 +77,7 @@ const Home = async () => {
   return (
     <div className="flex">
       <div className="mx-auto max-w-sm">
-        <div className="m-2 text-center">
+        <div className="text-center">
           <h1 className="text-4xl font-bold">Steam Achievements</h1>
           <p>
             A tracker for my percentage completion of achievements on my Steam
@@ -96,51 +88,23 @@ const Home = async () => {
             unstarted games.
           </p>
         </div>
-        <Accordion type="single" collapsible>
-          {gamesWithAchievements.map((game, i) => (
-            <AccordionItem
-              key={game.game.id}
-              value={`item-${i}`}
-              className="m-4 w-full"
-            >
-              <AccordionTrigger className="flex w-full">
-                <div className="flex w-full flex-grow flex-col pr-2 text-left">
-                  <div className="flex space-x-2">
-                    <Avatar className="my-auto">
-                      <AvatarImage src={game.game.coverURL} />
-                      <AvatarFallback>
-                        {game.achievements!.game.slice(0, 2).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <h1 className="my-auto font-bold">
-                      {game.achievements!.game}
-                    </h1>
-                  </div>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                {game.achievements!.achievements.map((achievement, i) => (
-                  <div key={i} className="m-2">
-                    <div
-                      className={
-                        achievement.unlocked
-                          ? "text-primary"
-                          : "text-destructive"
-                      }
-                    >
-                      {achievement.name}
-                    </div>
-                  </div>
-                ))}
-              </AccordionContent>
-              <Progress
-                className="mt-2"
-                value={game.achievements!.percentage}
-                text={`${game.achievements!.numCompleted} / ${game.achievements!.achievements.length}`}
-              />
-            </AccordionItem>
-          ))}
-        </Accordion>
+        {gamesWithAchievements.map((game) => (
+          <div key={game.game.id} className="m-4 space-y-2">
+            <div className="flex space-x-2">
+              <Avatar className="my-auto">
+                <AvatarImage src={game.game.coverURL} />
+                <AvatarFallback>
+                  {game.achievements!.game.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <h1 className="my-auto font-bold">{game.achievements!.game}</h1>
+            </div>
+            <Progress
+              value={game.achievements!.percentage}
+              text={`${game.achievements!.numCompleted} / ${game.achievements!.achievements.length}`}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
