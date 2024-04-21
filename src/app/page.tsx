@@ -111,3 +111,5 @@ const Home = async () => {
 };
 
 export default Home;
+
+export const revalidate = 60 * 60; // 1 hour
