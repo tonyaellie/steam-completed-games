@@ -1,7 +1,8 @@
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
-import { Metadata } from "next";
+import { type Metadata } from "next";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,7 +22,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>{children}</body>
+      <body className={`font-sans ${inter.variable}`}>
+        <Script
+          defer
+          data-domain="games.tokia.dev"
+          src="https://ingest.tokia.dev/js/script.js"
+        />
+        {children}
+      </body>
     </html>
   );
 }
